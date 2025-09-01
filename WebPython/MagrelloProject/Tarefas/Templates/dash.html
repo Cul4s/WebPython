@@ -1,0 +1,37 @@
+{% extends "tarefas/base.html" %}
+{% block content %}
+<h2>Dashboard</h2>
+
+<!-- Filtro -->
+<form method="get" class="mb-3">
+    <label for="status">Filtrar por Status:</label>
+    <select name="status" id="status" onchange="this.form.submit()">
+        <option value="todas" {% if not status_filtro or status_filtro == "todas" %}selected{% endif %}>Todas</option>
+        <option value="pendente" {% if status_filtro == "pendente" %}selected{% endif %}>Pendente</option>
+        <option value="andamento" {% if status_filtro == "andamento" %}selected{% endif %}>Em andamento</option>
+        <option value="concluida" {% if status_filtro == "concluida" %}selected{% endif %}>Concluída</option>
+    </select>
+</form>
+
+<h3>Minhas Tarefas</h3>
+<a href="{% url 'nova_tarefa' %}" class="btn btn-success mb-2">+ Nova Tarefa</a>
+<ul>
+    {% for tarefa in minhas_tarefas %}
+        <li>{{ tarefa.titulo }} - {{ tarefa.status }}
+        <a href="{% url 'editar_tarefa' tarefa.id %}">Editar</a> |
+        <a href="{% url 'excluir_tarefa' tarefa.id %}">Excluir</a>
+        </li>
+    {% empty %}
+        <li>Nenhuma tarefa encontrada.</li>
+    {% endfor %}
+</ul>
+
+<h3>Tarefas Sob minha Responsabilidade</h3>
+<ul>
+    {% for tarefa in atribuidas %}
+        <li>{{ tarefa.titulo }} - {{ tarefa.status }}</li>
+    {% empty %}
+        <li>Nenhuma tarefa encontrada.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
