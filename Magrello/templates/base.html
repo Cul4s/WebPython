@@ -1,0 +1,43 @@
+<!-- Templates/home.html -->
+
+{% block title %}Quadros - Magrello{% endblock %}
+
+{% block content %}
+<h1>Quadros</h1>
+
+<a href="{% url 'criar_quadro' %}" class="btn btn-primary mb-4">Criar novo quadro</a>
+
+{% for quadro in quadros %}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>{{ quadro.nome }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for lista in quadro.listas.all %}
+                    <div class="col-md-4">
+                        <div class="card mb-3">
+                            <div class="card-header bg-info text-white">
+                                <strong>{{ lista.nome }}</strong>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% for cartao in lista.cartoes.all %}
+                                    <li class="list-group-item">
+                                        <strong>{{ cartao.titulo }}</strong><br>
+                                        <small>{{ cartao.descricao }}</small>
+                                    </li>
+                                {% empty %}
+                                    <li class="list-group-item text-muted">Sem cartões</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% empty %}
+    <p class="text-muted">Nenhum quadro criado ainda.</p>
+{% endfor %}
+
+{% endblock %}
